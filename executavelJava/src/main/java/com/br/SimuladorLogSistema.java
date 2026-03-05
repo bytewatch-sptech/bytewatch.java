@@ -15,8 +15,13 @@ public class SimuladorLogSistema {
     // nao precisamos deixar ela privada, coloquei o static para informar que ela pertence apenas a essa classe,
     // e a tag final siginifica que ela nao pode ser atribuida.
     public static final String[] niveis = {"INFO","WARN","ERROR"};
-    public static final String[] mensagens = {"O sistema esta sofrendo instabilidades","Conexão com banco de dados lenta","CPU está acima da temperatura adequada","Armazenamento está chegando a seu limite","Sistema pode estar lento, verifique o uso da memória"};
-    //Aqui é a main da nossa classe, e é onde vai rodar todo código,
+    public static final String[] observabilidade =
+            {       "[event: erro de autenticação], [Hostname: server01] , [ip : 192.168.1.1]",
+                    "[event: erro de conexão com AWS] , [Hostname: server07], [ip : 192.168.1.3 ]",
+                    "[event: Autenticação realizada com sucesso] , [Hostname: server07], [ip : 192.168.1.3]",
+                    "[event: CPU com temperatura acima do normal(Novo registro no jira)] , [Hostname: server10], [ip : 192.168.1.14]"};
+
+    //Aqui é a main da nossa classe, e é onde o sistema vai rodar,
     // nela definimos uma variavel com o random para usarmos ela e formataremos a data.
     public static void main(String[] args) throws InterruptedException {
         Random random = new Random();
@@ -29,11 +34,11 @@ public class SimuladorLogSistema {
         while (true) {
             String tempoReal = LocalDateTime.now().format(data_hora);
             String nivelAviso = niveis[random.nextInt(niveis.length)];
-            String mensagem = mensagens[random.nextInt(mensagens.length)];
+            String mensagem_observabilidade = observabilidade[random.nextInt(observabilidade.length)];
 
             // Aqui indicamos o formato do print, colocando as tres categorias,
             // como tempo, nivel do aviso e a mensagem
-            System.out.printf("[%s] [%s] - %s%n", tempoReal, nivelAviso, mensagem);
+            System.out.printf("[%s] [%s] - %s%n", tempoReal, nivelAviso, mensagem_observabilidade);
 
             //Nesta parte foi definida o intervalo entre os logs, porém usei o .random
             // e um intervalo entre 2 a 3 segundos,
