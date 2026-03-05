@@ -23,9 +23,11 @@ Oracle JDK 21:
 https://www.oracle.com/java/technologies/javase/jdk21-archive-downloads.html
 
 
-Como Executar o Projeto
+#Como Executar o Projeto
 Após instalar o JDK 21:
 Abra a IDE e se necessitar de auxilio, assista o video e veja o conteúdo explicado sobre como criar um .jar da SPTech play - "Como gerar um JAR executável".
+
+#Outras formas de executar o projeto
 
 Dentro da pasta do projeto após clona-lo, terá uma pasta chamada 'target', e dentro dela terá o executavel .jar, o executavel jre com a versão compativel com o projeto, e um script.bat.
 Esse script executa duas ações, uma primeiro verifica se o pc que esta seno executado possui uma jre para rodar o projeto, e se nao possuir, ele instala, e a segunda ação, ele roda o sistema de logs.
