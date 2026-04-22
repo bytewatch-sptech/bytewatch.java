@@ -1,36 +1,123 @@
-# bytewatch.java
-Projeto de Pesquisa e Inovação - Java
+# 🚀 Exemplo de Integração Java + Jira
 
-Código do executavel .jar 
+Este projeto demonstra como integrar uma aplicação Java com o Jira Cloud usando a API REST para criar issues automaticamente.
 
-Aqui contém a versão do código do executável da aplicação Java, juntamente com o arquivo Executavel nos releases do projeto:
+## 📋 Sobre a Autenticação via API Token
 
+A autenticação no Jira utiliza um **token de API** combinado com o endereço de e-mail do usuário. Este método seguro permite que aplicações externas façam requisições autenticadas sem precisar armazenar senhas. O token funciona como uma credencial especial que pode ser revogada ou deletada a qualquer momento.
 
+Para mais informações, consulte a [documentação oficial da API do Jira](https://developer.atlassian.com/cloud/jira/platform/rest/v3/).
 
-Versão do Projeto - 1.1.0
+## 🔐 Como Gerar um Token de API no Jira
 
-O projeto foi desenvolvido utilizando:
+Siga os passos abaixo para criar um token de API e integrá-lo com sua aplicação Java:
 
-Java 21 e Maven 21
-(Foi necessário a instalação do Maven na maquina para a criação do script. Que pode ser seguido por esta fonte : https://dicasdeprogramacao.com.br/como-instalar-o-maven-no-windows/)
-- Também foi necessario configurar as variaveis de ambiente. Após a instalação da jdk, tive que criar uma variavel de ambiente que me direcionava para a versão que eu queria da jdk.
-Tudo está explicado no documento acima.
+### Passo 1: Acessar o Site do Jira
+- Acesse [jira.atlassian.com](https://jira.atlassian.com)
+- Clique em "Criar conta" ou faça login se já possuir uma conta
+- Preencha os dados solicitados
 
+### Passo 2: Criar um Site (Workspace)
+- Após criar a conta, você será redirecionado para criar um novo site
+- Escolha um nome para seu site
+- Clique em "Criar site"
 
-Você pode baixar o Java 21 para desenvolvedores pelos links oficiais abaixo:
+### Passo 3: Criar um Projeto
+- Dentro do seu site, clique em "Criar projeto"
+- Selecione o tipo de projeto (ex: "Software" para desenvolvimento)
+- Escolha um modelo de projeto (ex: "Kanban")
+- Defina um nome para seu projeto
+- Clique em "Criar"
 
-Oracle JDK 21:
-https://www.oracle.com/java/technologies/javase/jdk21-archive-downloads.html
+### Passo 4: Copiar a URL Base do Projeto
+- A URL do seu projeto terá este formato: `https://seu-dominio.atlassian.net`
+- Copie esta URL base para usar no código Java
 
+### Passo 5: Acessar as Configurações da Conta
+- Clique na sua foto de perfil no canto superior direito
+- Selecione "Configurações de perfil" ou "Account settings"
 
-# Como Executar o Projeto
-Após instalar o JDK 21:
-Abra a IDE e se necessitar de auxilio, assista o video e veja o conteúdo explicado sobre como criar um .jar da SPTech play - "Como gerar um JAR executável".
+### Passo 6: Gerar um Token de API
+- No menu lateral, clique em "Segurança" (Security)
+- Localize a seção "API tokens"
+- Clique em "Criar token de API" (Create API token)
 
-# Outras formas de executar o projeto
+### Passo 7: Configurar Expiração (Opcional)
+- Na tela de criação, você pode definir uma expiração para o token
+- É recomendado definir uma expiração por questões de segurança
 
-Dentro da pasta do projeto após clona-lo, terá uma pasta chamada 'target', e dentro dela terá o executavel .jar, o executavel jre com a versão compativel com o projeto, e um script.bat.
-Esse script executa duas ações, uma primeiro verifica se o pc que esta sendo executado possui uma jre para rodar o projeto, e se não possuir, ele instala, e a segunda ação, ele roda o sistema de logs.
+### Passo 8: Copiar o Token
+- Após gerar o token, uma URL será exibida com o valor do token
+- **Copie e guarde em um local seguro** - você não conseguirá ver o valor novamente
 
-# Executar pelo cmd dentro da pasta onde está o .jar
-Outra forma de executa-lo, é abrir o terminal dentro da mesma pasta que tiver o .jar, e executar no terminal o seguinte comando: java -jar .\SistemaLog.jar
+### Passo 9: Integrar com Seu Código Java
+- Abra o arquivo `src/main/java/school/sptech/app/App.java`
+- Substitua os valores das seguintes variáveis:
+
+```java
+String baseUrl = "https://seu-dominio.atlassian.net";
+String email = "seu-email@example.com";
+String apiToken = "seu-token-aqui";
+String projectKey = "key-do-projeto";
+```
+
+### Passo 10: Executar o Código
+- Compile e execute seu projeto Java
+- Uma nova issue será criada no backlog do seu projeto Jira
+- Você deve ver a resposta da API no console com o ID da issue criada
+
+## 📝 Exemplo de Uso
+
+Para criar uma issue no Jira usando este código:
+
+```java
+import school.sptech.config.Jira;
+
+public class App {
+    public static void main(String[] args) throws Exception {
+        String baseUrl = "https://seu-dominio.atlassian.net";
+        String email = "seu-email@example.com";
+        String apiToken = "seu-token-aqui";
+        
+        Jira jira = new Jira(baseUrl, email, apiToken);
+        
+        String resultado = jira.createIssue(
+            "key-do-projeto",           // Project Key
+            "Nova tarefa",     // Resumo
+            "Task"             // Tipo de issue
+        );
+        
+        System.out.println(resultado);
+    }
+}
+```
+
+## 💡 Identificando a Chave do Projeto
+
+A **chave do projeto** (project key) aparece na URL:
+
+- Exemplo: `https://java-integration.atlassian.net/jira/software/projects/SCRUM/boards/1/backlog`
+- Nesse exemplo, a chave do projeto é **`SCRUM`**
+
+Você também pode encontrá-la nas configurações do projeto dentro do Jira.
+
+## ⚠️ Segurança
+
+- **Nunca compartilhe seu token de API** publicamente ou suba no GitHub
+- **Nunca commite suas credenciais** no repositório
+- Se o token vazar, acesse imediatamente o Jira e delete/revogue o token
+- Crie um novo token e atualize suas configurações
+
+## 🛠️ Requisitos
+
+- Java 21 ou superior
+- Conta no Jira Cloud (gratuita)
+- Maven (opcional, para build via terminal)
+
+## 📚 Recursos Úteis
+
+- [Documentação da API REST do Jira Cloud](https://developer.atlassian.com/cloud/jira/platform/rest/v3/)
+- [Autenticação no Jira Cloud](https://developer.atlassian.com/cloud/jira/platform/basic-auth-for-rest-apis/)
+- [Referência da API de Issues](https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-issues/)
+- [Criando Tokens de API](https://support.atlassian.com/atlassian-account/docs/manage-api-tokens-for-your-atlassian-account/)
+
